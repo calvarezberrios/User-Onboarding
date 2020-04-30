@@ -80,13 +80,19 @@ const Form = () => {
     const formSubmit = e => {
         e.preventDefault();
 
-        axios.post("https://reqres.in/api/users", userInfo)
-            .then(response => {
-                console.log(response.data);
-                setUsers([...users, response.data]);
-                setUserInfo(initialState);
-            })
-            .catch(err => console.log(err));
+        formSchema.isValid(userInfo)
+            .then(valid => {
+                if(valid) {
+                    axios.post("https://reqres.in/api/users", userInfo)
+                        .then(response => {
+                            console.log(response.data);
+                            setUsers([...users, response.data]);
+                            setUserInfo(initialState);
+                        })
+                        .catch(err => console.log(err));
+                }
+            });
+        
 
 
     }
@@ -100,7 +106,7 @@ const Form = () => {
                 <FormGroup row>
                     <Label htmlFor="name" sm="3">Name:</Label>
                     <Col sm="9">
-                        <Input id="name" type="text" name="name" value={userInfo.name} placeholder="Enter full name" onChange={inputChange} invalid={errors.name.length > 0 ? true : null} />
+                        <Input id="name" type="text" name="name" value={userInfo.name} placeholder="Enter full name" onChange={inputChange} invalid={errors.name.length > 0 ? true : null} data-cy="name"/>
                         <FormFeedback>{errors.name}</FormFeedback>
                     </Col>
                 </FormGroup>
@@ -108,7 +114,7 @@ const Form = () => {
                 <FormGroup row>
                     <Label htmlFor="age" sm="3">Age:</Label>
                     <Col sm="9">
-                        <Input id="age" type="text" name="age" value={userInfo.age} placeholder="Enter age" onChange={inputChange} invalid={errors.age ? true : null} />
+                        <Input id="age" type="text" name="age" value={userInfo.age} placeholder="Enter age" onChange={inputChange} invalid={errors.age ? true : null} data-cy="age" />
                         <FormFeedback>{errors.age}</FormFeedback>
                     </Col>
                 </FormGroup>
@@ -116,7 +122,7 @@ const Form = () => {
                 <FormGroup row>
                     <Label htmlFor="email" sm="3">Email:</Label>
                     <Col sm="9">
-                        <Input id="email" type="email" name="email" value={userInfo.email} placeholder="Enter email address" onChange={inputChange} invalid={errors.email.length > 0 ? true : null} />
+                        <Input id="email" type="email" name="email" value={userInfo.email} placeholder="Enter email address" onChange={inputChange} invalid={errors.email.length > 0 ? true : null} data-cy="email" />
                         <FormFeedback>{errors.email}</FormFeedback>
                     </Col>
                 </FormGroup>
@@ -124,7 +130,7 @@ const Form = () => {
                 <FormGroup row>
                     <Label htmlFor="password" sm="3">Password:</Label>
                     <Col sm="9">
-                        <Input id="password" type="password" name="password" value={userInfo.password} placeholder="Enter a 4 digit Pin" onChange={inputChange} maxLength="4" invalid={errors.password.length > 0 ? true : null} />
+                        <Input id="password" type="password" name="password" value={userInfo.password} placeholder="Enter a 4 digit Pin" onChange={inputChange} maxLength="4" invalid={errors.password.length > 0 ? true : null} data-cy="password" />
                         <FormFeedback>{errors.password}</FormFeedback>
                     </Col>
                 </FormGroup>
@@ -132,7 +138,7 @@ const Form = () => {
                 <FormGroup row>
                     <Label htmlFor="role" sm="3">Role:</Label>
                     <Col sm="9">
-                        <CustomInput id="role" type="select" name="role" value={userInfo.role} onChange={inputChange} >
+                        <CustomInput id="role" type="select" name="role" value={userInfo.role} onChange={inputChange} data-cy="role" >
                             <option value = "">Select a role</option>
                             <option>Customer Service</option>
                             <option>Sales</option>
@@ -146,7 +152,7 @@ const Form = () => {
 
                 <Label htmlFor="terms">
                     I agree to the Terms of Service
-                    <Input id="terms" type="checkbox" name="terms" checked={userInfo.terms} onChange={inputChange} invalid={errors.email.length > 0 ? null : true} />
+                    <Input id="terms" type="checkbox" name="terms" checked={userInfo.terms} onChange={inputChange} invalid={errors.email.length > 0 ? null : true} data-cy="terms" />
 
 
 
